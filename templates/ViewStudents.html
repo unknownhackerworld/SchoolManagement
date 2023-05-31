@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <nav class="bg-violet-800 py-4 px-6">
+        <div class="flex items-center justify-between">
+            <a href="/" class="text-3xl font-bold text-white">XYZSchool</a>
+            <div class="text-xl">
+                <a href="#" class="text-white hover:text-gray-800 px-4 py-2">Admin</a>
+                <a href="#" class="text-white hover:text-gray-800 px-4 py-2">Parent</a>
+            </div>
+        </div>
+    </nav>
+    <div class="grid grid-cols-6">
+        <div class="bg-violet-800 col-span-1 h-[100%] w-36">
+            <div class="flex mt-5 flex-col text-white gap-y-2">
+                <a href="{{url_for('StudentsDetails')}}" class="py-3 text-center shadow-2xl mx-1">Student
+                    Detail</a>
+                <a href="{{url_for('AddStudents')}}" class="py-3 text-center shadow-2xl mx-1">Add Students</a>
+                <a href="" class="py-3 text-center shadow-2xl mx-1">Student Report</a>
+                <a href="" class="py-3 text-center shadow-2xl mx-1">Edit Student</a>
+                <a href="#" class="py-3 text-center shadow-2xl mx-1">Upload Assignments</a>
+            </div>
+        </div>
+        <div class="col-span-5 p-8">
+            <div class="grid grid-cols-2 gap-8">
+                <div>
+                    <label for="id" class="block font-bold text-gray-800 text-2xl">ID</label>
+                    <p id="id" class="text-gray-600 text-xl">{{ details[0] }}</p>
+                </div>
+                <div>
+                    <label for="name" class="block font-bold text-gray-800 text-2xl">Name</label>
+                    <p id="name" class="text-gray-600 text-xl">{{details[1]}}</p>
+                </div>
+                <div>
+                    <label for="admnNo" class="block font-bold text-gray-800 text-2xl">Admission Number</label>
+                    <p id="admnNo" class="text-gray-600 text-xl">{{details[2]}}</p>
+                </div>
+                <div>
+                    <label for="class" class="block font-bold text-gray-800 text-2xl">Class</label>
+                    <p id="class" class="text-gray-600 text-xl">{{details[3]}}</p>
+                </div>
+                <div>
+                    <label for="dob" class="block font-bold text-gray-800 text-2xl">Date of Birth</label>
+                    <p id="dob" class="text-gray-600 text-xl">{{details[4]}}</p>
+                </div>
+                <div>
+                    <label for="fatherNumber" class="block font-bold text-gray-800 text-2xl">Father's Number</label>
+                    <p id="fatherNumber" class="text-gray-600 text-xl">{{details[5]}}</p>
+                </div>
+                <div>
+                    <label for="father" class="block font-bold text-gray-800 text-2xl">Father</label>
+                    <p id="father" class="text-gray-600 text-xl">{{details[6]}}</p>
+                </div>
+                <div>
+                    <label for="mother" class="block font-bold text-gray-800 text-2xl">Mother</label>
+                    <p id="mother" class="text-gray-600 text-xl">{{details[7]}}</p>
+                </div>
+                <div>
+                    <label for="address" class="block font-bold text-gray-800 text-2xl">Address</label>
+                    <p id="address" class="text-gray-600 text-xl">{{details[8]}}</p>
+                </div>
+                <div>
+                    <label for="motherNumber" class="block font-bold text-gray-800 text-2xl">Mother's Number</label>
+                    <p id="motherNumber" class="text-gray-600 text-xl">{{details[9]}}</p>
+                </div>
+                <div>
+                    <label for="studentId" class="block font-bold text-gray-800 text-2xl">Student ID</label>
+                    <p id="studentId" class="text-gray-600 text-xl">{{details[10]}}</p>
+                </div>
+                <div>
+                    <label for="markScored" class="block font-bold text-gray-800 text-2xl">Mark Scored</label>
+                    <p id="markScored" class="text-gray-600 text-xl">{{details[11]}}</p>
+                </div>
+                <div>
+                    <label for="attendance" class="block font-bold text-gray-800 text-2xl">Attendance</label>
+                    <p id="attendance" class="text-gray-600 text-xl">90%</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

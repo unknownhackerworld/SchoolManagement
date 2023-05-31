@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Document</title>
+   
+</head>
+
+<body>
+    <nav class="bg-violet-800 py-4 px-6">
+        <div class="flex items-center justify-between">
+            <a href="/" class="text-3xl font-bold text-white">XYZSchool</a>
+            <div class="text-xl">
+                <a href="#" class="text-white hover:text-gray-800 px-4 py-2">Admin</a>
+                <a href="#" class="text-white hover:text-gray-800 px-4 py-2">Parent</a>
+            </div>
+        </div>
+    </nav>
+    <div class="grid grid-cols-6">
+        <div class="bg-violet-800 col-span-1 h-full w-36">
+            <div class="flex mt-5 flex-col text-white gap-y-2">
+                <a href="{{ url_for('StudentsDetails') }}" class="py-3 text-center shadow-2xl mx-1">Student
+                    Detail</a>
+                <a href="{{ url_for('AddStudents') }}" class="py-3 text-center shadow-2xl mx-1">Add Students</a>
+                <a href="" class="py-3 text-center shadow-2xl mx-1">Student Report</a>
+                <a href="" class="py-3 text-center shadow-2xl mx-1">Edit Student</a>
+                <a href="#" class="py-3 text-center shadow-2xl mx-1">Upload Assignments</a>
+            </div>
+        </div>
+
+        <div class="col-span-5 p-6">
+            <h1 class="text-4xl font-bold mb-6">Name List</h1>
+            <input type="text" id="searchInput" class="mb-4 p-2 border border-gray-300 rounded-md"
+                placeholder="Search by name">
+            <form action="/ViewStudents" method="post">
+            <ul id="nameList" class="list-inside"></ul>
+            </form>
+            <div id="loader" class="text-center mt-4">
+                <p>Loading...</p>
+            </div>
+        </div>
+
+    </div>
+
+   <script>
+      const searchInput = document.getElementById('searchInput');
+      const nameList = document.getElementById('nameList');
+      const loader = document.getElementById('loader');
+      const itemsPerPage = 20; // Number of items to load per page
+      let currentPage = 0; // Current page number
+
+      function loadMoreItems() {
+      const start = currentPage * itemsPerPage;
+      const end = start + itemsPerPage;
+      const searchTerm = searchInput.value.trim(); // Get the search term from the input
+
+      let url
+      if (searchTerm === '') {
+        url = `/get-names?start=${start}&end=${end}`
+      
+      }else {
+        url = `/get-names?search=${encodeURIComponent(searchTerm)}`;
+      }
+     
+
+      fetch(url)
+      .then(response => response.json())
+      .then(names => {
+      if (names.length === 0) {
+      loader.style.display = 'none';
+      return;
+      } else {
+      const fragment = document.createDocumentFragment();
+      names.forEach(name => {
+      const button = document.createElement('button');
+      button.className = 'text-xl mb-2 ';
+      button.type = 'submit';
+      button.name = 'value';
+      button.value = name.value;
+      button.textContent = name.name;
+      hr = document.createElement('hr')
+      hr.className = 'w-[70%] h-[0.5px] bg-slate-400 mb-8'
+      fragment.appendChild(button);
+      fragment.appendChild(document.createElement('br'));
+      fragment.appendChild(hr);
+      });
+
+      nameList.appendChild(fragment);
+      currentPage++;
+      loader.style.display = 'none';
+      }
+      })
+      .catch(error => {
+      console.error('Error loading names:', error);
+      loader.style.display = 'none';
+      });
+      }
+
+      function checkScroll() {
+      const scrollTop = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop);
+      const windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+      const documentHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+
+      if (scrollTop + windowHeight >= documentHeight - 200) {
+      loader.style.display = 'block';
+      loadMoreItems();
+      }
+      }
+
+      window.addEventListener('scroll', checkScroll);
+
+      searchInput.addEventListener('input', function () {
+      currentPage = 0; // Reset current page when search term changes
+      nameList.innerHTML = ''; // Clear existing items
+      loader.style.display = 'block';
+      loadMoreItems();
+      });
+
+      // Initial load
+      loadMoreItems();
+
+
+   </script>
+
+</body>
+
+</html>
