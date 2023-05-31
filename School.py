@@ -24,7 +24,9 @@ def StudentsDetails():
     db = mysql.connector.connect(
         host=host,
         user=user,
-        database=database
+        database=database,
+        password=password
+
     )
     cursor = db.cursor()
     cursor.execute("SELECT `NAME`,`FATHER`,`STUDENT ID` FROM students")
@@ -40,7 +42,8 @@ def process():
     db = mysql.connector.connect(
          host=host,
         user=user,
-        database=database
+        database=database,
+        password=password
     )
     cursor = db.cursor()
     cursor.execute(f"SELECT * FROM students WHERE `STUDENT ID` = '{value}'")
@@ -66,7 +69,8 @@ def get_names():
         db = mysql.connector.connect(
              host=host,
         user=user,
-        database=database
+        database=database,
+        password=password
         )
         cursor = db.cursor()
         query = f"SELECT NAME,`STUDENT ID` FROM students WHERE NAME LIKE '%{search}%' ORDER BY name"
@@ -110,7 +114,8 @@ def AddData():
     db = mysql.connector.connect(
         host=host,
         user=user,
-        database=database
+        database=database,
+        password=password
     )
     cursor = db.cursor()
     cursor.execute("SELECT ID, `ADMN NO` FROM students ORDER BY ID DESC LIMIT 1")
