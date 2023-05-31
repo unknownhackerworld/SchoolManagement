@@ -1,6 +1,7 @@
 from flask import Flask,render_template,request,jsonify,redirect,url_for
 import mysql.connector
 import uuid
+import json
 
 
 app = Flask(__name__)
@@ -140,6 +141,55 @@ def AddData():
         '''
     finally:
         return redirect(url_for('StudentsDetails'))
+
+@app.route('/EditStudents')
+def EditStudents():
+    db = mysql.connector.connect(
+        host=host,
+        user=user,
+        database=database
+    )
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM students")
+    columns = [column[0] for column in cursor.description]
+    students = [dict(zip(columns, student)) for student in cursor.fetchall()]
+    form_data = json.dumps(students)  # Convert students data to JSON format
+    return render_template('EditStudents.html', form_data=form_data, students=students)
+
+@app.route('/Edit',methods=['POST'])
+def Edit():
+    admn = request.form['admn']
+    id = request.form['id']
+    student_id = request.form['studentId']
+    name = request.form['name']
+    class_name = request.form['class']
+    date_of_birth = request.form['dateOfBirth']
+    father_number = request.form['fatherNumber']
+    father = request.form['father']
+    mother = request.form['mother']
+    address = request.form['address']
+    mother_number = request.form['motherNumber']
+
+    db = mysql.connector.connect(
+        host=host,
+        user=user,
+        database=database,
+        password=password
+    )
+    cursor = db.cursor()
+   
+
+    try:
+        cursor.execute(f"UPDATE students SET ID = '{id}', NAME = '{name}', `ADMN NO` = '{admn}', CLASS = '{class_name}', DOB = '{date_of_birth}', `FATHER NUMBER` = '{father_number}', FATHER = '{father}', MOTHER = '{mother}', ADDRESS = '{address}', `MOTHER NUMBER` = '{mother_number}', `STUDENT ID` = '{student_id}' WHERE `STUDENT ID` = '{student_id}'")
+        db.commit()
+        return redirect(url_for('StudentsDetails'))
+    except Exception as e:
+        return f'''
+        <script>
+            alert("There Is Some Error: {e}");
+            window.location.href = "{url_for('StudentsDetails')}";
+        </script>
+        '''
 
 
 if __name__ == '__main__':

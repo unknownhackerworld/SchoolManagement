@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Add Students</title>
+</head>
+
+<body>
+    <nav class="bg-violet-800 py-4 px-6">
+        <div class="flex items-center justify-between">
+            <a href="/" class="text-3xl font-bold text-white">XYZSchool</a>
+            <div class="text-xl">
+                <a href="#" class="text-white hover:text-gray-800 px-4 py-2">Admin</a>
+                <a href="#" class="text-white hover:text-gray-800 px-4 py-2">Parent</a>
+            </div>
+        </div>
+    </nav>
+    <div class="grid grid-cols-6">
+        <div class="bg-violet-800 col-span-1 h-screen w-36">
+            <div class="flex mt-5 flex-col text-white gap-y-2">
+               <a href="{{ url_for('StudentsDetails') }}" class="py-3 text-center shadow-2xl mx-1">Student
+                   Detail</a>
+               <a href="{{ url_for('AddStudents') }}" class="py-3 text-center shadow-2xl mx-1">Add Students</a>
+               <a href="" class="py-3 text-center shadow-2xl mx-1">Student Report</a>
+               <a href="{{ url_for('EditStudents') }}" class="py-3 text-center shadow-2xl mx-1">Edit Student</a>
+               <a href="#" class="py-3 text-center shadow-2xl mx-1">Upload Assignments</a>
+            </div>
+        </div>
+        <div class="col-span-5 p-8">
+            <form action="/Edit" method="post">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="name" class="block font-bold text-gray-800 text-2xl">Name</label>
+                        <select id="name" name="name"
+                            class="border-b px-4 py-2 rounded-md w-full focus:border-blue-500 focus:outline-none"
+                            onchange="updateFormFields()">
+                            <option disabled selected>Select a student</option>
+                            {% for student in students %}
+                            <option value="{{ student.NAME }}">{{ student.NAME }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <input type="hidden" id="id" value="" name="id" />
+                    <input type="hidden" id="admn" value="" name="admn" />
+                    <input type="hidden" id="studentId" value="" name="studentId" />
+
+                    <div>
+                        <label for="class" class="block font-bold text-gray-800 text-2xl">Class</label>
+                        <input type="text" id="class" name="class"
+                            class="border-b px-4 py-2 rounded-md w-full focus:border-blue-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label for="dob" class="block font-bold text-gray-800 text-2xl">Date of Birth</label>
+                        <input type="date" id="dob" name="dateOfBirth"
+                            class="border-b px-4 py-2 rounded-md w-full focus:border-blue-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label for="fatherNumber" class="block font-bold text-gray-800 text-2xl">Father's Number</label>
+                        <input type="number" maxlength="10" placeholder="Enter Without Country Code" id="fatherNumber"
+                            name="fatherNumber"
+                            class="border-b px-4 py-2 rounded-md w-full focus:border-blue-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label for="father" class="block font-bold text-gray-800 text-2xl">Father</label>
+                        <input type="text" id="father" name="father"
+                            class="border-b px-4 py-2 rounded-md w-full focus:border-blue-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label for="mother" class="block font-bold text-gray-800 text-2xl">Mother</label>
+                        <input type="text" id="mother" name="mother"
+                            class="border-b px-4 py-2 rounded-md w-full focus:border-blue-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label for="address" class="block font-bold text-gray-800 text-2xl">Address</label>
+                        <input type="text" id="address" name="address"
+                            class="border-b px-4 py-2 rounded-md w-full focus:border-blue-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label for="motherNumber" class="block font-bold text-gray-800 text-2xl">Mother's Number</label>
+                        <input type="number" id="motherNumber" name="motherNumber" maxlength="10"
+                            placeholder="Enter Without Country Code"
+                            class="border-b px-4 py-2 rounded-md w-full focus:border-blue-500 focus:outline-none">
+                    </div>
+                </div>
+                <button class="bg-violet-800 text-white font-bold py-2 px-4 mt-4 rounded-md">Submit</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        var formData = JSON.parse('{{ form_data | safe }}'); // Parse the JSON-formatted form_data variable
+
+        function updateFormFields() {
+            var selectedName = document.getElementById("name").value;
+
+            var selectedStudent = formData.find(function (student) {
+                return student.NAME === selectedName;
+            });
+
+            document.getElementById("class").value = selectedStudent.CLASS;
+            document.getElementById("dob").value = selectedStudent.DOB;
+            document.getElementById("fatherNumber").value = selectedStudent['FATHER NUMBER'];
+            document.getElementById("father").value = selectedStudent.FATHER;
+            document.getElementById("mother").value = selectedStudent.MOTHER;
+            document.getElementById("address").value = selectedStudent.ADDRESS;
+            document.getElementById("id").value = selectedStudent.ID;
+            document.getElementById("admn").value = selectedStudent['ADMN NO'];
+            document.getElementById("studentId").value = selectedStudent['STUDENT ID'];
+            document.getElementById("motherNumber").value = selectedStudent['MOTHER NUMBER'];
+        }
+    </script>
+</body>
+
+</html>
