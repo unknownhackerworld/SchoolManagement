@@ -20,6 +20,7 @@ def hello_world():
 def AddStudents():
    return render_template("AddStudents.html")
 
+
 @app.route('/StudentsDetails')
 def StudentsDetails():
     db = mysql.connector.connect(
@@ -37,6 +38,7 @@ def StudentsDetails():
     db.close()
     return render_template('StudentsDetails.html', names=names)
 
+
 @app.route('/ViewStudents', methods=['POST'])
 def process():
     value = request.form['value']
@@ -49,7 +51,8 @@ def process():
     cursor = db.cursor()
     cursor.execute(f"SELECT * FROM students WHERE `STUDENT ID` = '{value}'")
     details = cursor.fetchall()
-    return render_template('ViewStudents.html',details=details[0])
+    mark = details[0][-1] + details[0][-2] + details[0][-3] + details[0][-4]
+    return render_template('ViewStudents.html',details=details[0],mark=mark)
     
 @app.route('/get-names')
 def get_names():
@@ -190,6 +193,50 @@ def Edit():
             window.location.href = "{url_for('StudentsDetails')}";
         </script>
         '''
+@app.route('/MarkEdit',methods=['POST'])
+def MarkEdit():
+    test1 = request.form['TEST1']
+    test2 = request.form['TEST2']
+    test3 = request.form['TEST3']
+    test4 = request.form['TEST4']
+    student_id = request.form['studentId']
+
+    db = mysql.connector.connect(
+        host=host,
+        user=user,
+        database=database,
+        password=password
+    )
+    cursor = db.cursor()
+   
+
+    try:
+        cursor.execute(f"UPDATE students SET `TEST_1` = '{test1}', `TEST_2` = '{test2}', `TEST_3` = '{test3}',`TEST_4` = '{test4}' WHERE `STUDENT ID` = '{student_id}'")
+        db.commit()
+        return redirect(url_for('StudentsReport'))
+    except Exception as e:
+        return f'''
+        <script>
+            alert("There Is Some Error: {e}");
+            window.location.href = "{url_for('StudentsReport')}";
+        </script>
+        '''    
+    
+
+@app.route('/StudentsReport')
+def StudentsReport():
+    db = mysql.connector.connect(
+        host=host,
+        user=user,
+        database=database
+    )
+    cursor = db.cursor()
+    cursor.execute("SELECT NAME,TEST_1,TEST_2,TEST_3,TEST_4,`STUDENT ID` FROM students")
+    columns = [column[0] for column in cursor.description]
+    students = [dict(zip(columns, student)) for student in cursor.fetchall()]
+    form_data = json.dumps(students)  
+    return render_template('StudentsReport.html',form_data=form_data, students=students)
+
 
 
 if __name__ == '__main__':
