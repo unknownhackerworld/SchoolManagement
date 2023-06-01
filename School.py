@@ -238,6 +238,10 @@ def StudentsReport():
     return render_template('StudentsReport.html',form_data=form_data, students=students)
 
 
+@app.route('/EnterPassword')
+def EnterPassword():
+    return render_template('password.html')
+
 
 if __name__ == '__main__':
    app.run()
