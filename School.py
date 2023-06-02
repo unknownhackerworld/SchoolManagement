@@ -251,12 +251,24 @@ def CheckData():
         database=database
     )
     cursor = db.cursor()
-    cursor.execute(f"SELECT Password,acc_type FROM user_data WHERE UserName = '{UserName}'")
+    cursor.execute(f"SELECT Password,acc_type,UserName FROM user_data WHERE UserName = '{UserName}'")
     data = cursor.fetchall()
-    if (PassWord == data[0][0]) and (userType == data[0][1]):
-        return render_template("admin.html")
-    else:
-        return data[0][1]
+    if data == []:
+        return f'''
+        <script>
+            alert("No UserName Found");
+            window.location.href = "{url_for('EnterPassword')}";
+        </script>'''
+    elif (PassWord != data[0][0]) and (UserName == data[0][2]):
+         return f'''
+        <script>
+            alert("Incorrect Password");
+            window.location.href = "{url_for('EnterPassword')}";
+        </script>
+        '''
+    elif (PassWord == data[0][0]) and (userType == data[0][1]):
+        return render_template(f"{userType}.html")
+   
     
             
 
