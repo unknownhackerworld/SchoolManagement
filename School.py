@@ -234,8 +234,15 @@ def StudentsReport():
     form_data = json.dumps(students)  
     return render_template('StudentsReport.html',form_data=form_data, students=students)
 
+@app.route('/Admin')
+def Admin():
+    return render_template('Admin.html')
 
-@app.route('/EnterPassword')
+@app.route('/Students')
+def Student():
+    return render_template('Student.html')
+
+@app.route('/login')
 def EnterPassword():
     return render_template('password.html')
 
@@ -267,9 +274,21 @@ def CheckData():
         </script>
         '''
     elif (PassWord == data[0][0]) and (userType == data[0][1]):
-        return render_template(f"{userType}.html")
+        return redirect(url_for(userType))
    
-    
+@app.route('/Grades')
+def StudentGrades():
+    db = mysql.connector.connect(
+        host=host,
+        user=user,
+        database=database
+    )
+    cursor = db.cursor()
+    cursor.execute("SELECT NAME,TEST_1,TEST_2,TEST_3,TEST_4,`STUDENT ID` FROM students")
+    columns = [column[0] for column in cursor.description]
+    students = [dict(zip(columns, student)) for student in cursor.fetchall()]
+    form_data = json.dumps(students) 
+    return render_template('StudentGrades.html',form_data=form_data, students=students)
             
 
 
