@@ -3,7 +3,6 @@ import mysql.connector
 import uuid
 import json
 
-
 app = Flask(__name__)
 
 host = "localhost"
@@ -11,10 +10,9 @@ user = "root"
 password=""
 database="SchoolProject"
 
-
 @app.route('/')
 def hello_world():
-   return render_template("index.html")
+   return render_template("password.html")
 
 @app.route('/AddStudents')
 def AddStudents():
@@ -180,7 +178,6 @@ def Edit():
         password=password
     )
     cursor = db.cursor()
-   
 
     try:
         cursor.execute(f"UPDATE students SET ID = '{id}', NAME = '{name}', `ADMN NO` = '{admn}', CLASS = '{class_name}', DOB = '{date_of_birth}', `FATHER NUMBER` = '{father_number}', FATHER = '{father}', MOTHER = '{mother}', ADDRESS = '{address}', `MOTHER NUMBER` = '{mother_number}', `STUDENT ID` = '{student_id}' WHERE `STUDENT ID` = '{student_id}'")
@@ -241,6 +238,27 @@ def StudentsReport():
 @app.route('/EnterPassword')
 def EnterPassword():
     return render_template('password.html')
+
+@app.route('/CheckData',methods=['POST'])
+def CheckData():
+    userType = request.form['user']
+    UserName = request.form['username']
+    PassWord = request.form['password']
+
+    db = mysql.connector.connect(
+        host=host,
+        user=user,
+        database=database
+    )
+    cursor = db.cursor()
+    cursor.execute(f"SELECT Password,acc_type FROM user_data WHERE UserName = '{UserName}'")
+    data = cursor.fetchall()
+    if (PassWord == data[0][0]) and (userType == data[0][1]):
+        return render_template("admin.html")
+    else:
+        return data[0][1]
+    
+            
 
 
 if __name__ == '__main__':
