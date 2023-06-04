@@ -43,6 +43,7 @@
                 <a href="{{url_for('StudentGrades')}}" class="py-3 text-center shadow-2xl mx-1">Grades</a>
                 <a href="{{url_for('assignments')}}" class="py-3 text-center shadow-2xl mx-1">Assignments</a>
                 <a href="" class="py-3 text-center shadow-2xl mx-1">Profile</a>
+                <button onclick="removeAllCookies()" class="py-3 text-center shadow-2xl mx-1">Logout</button>
             </div>
         </div>
         <div class="col-span-5 mt-5 scale-100">
@@ -77,6 +78,18 @@
                 </div>
         </div>
     </div>
+     <script>
+         function removeAllCookies() {
+             var cookies = document.cookie.split(";");
+
+             for (var i = 0; i < cookies.length; i++) {
+                 var cookie = cookies[i];
+                 var eqPos = cookie.indexOf("=");
+                 var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+                 document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+             }
+         } // Call the removeAllCookies
+     </script>
 </body>
 
 </html>
