@@ -1,4 +1,4 @@
-from flask import Flask,render_template,request,jsonify,redirect,url_for
+from flask import Flask,render_template,request,jsonify,redirect,url_for,make_response
 from werkzeug.utils import secure_filename
 import mysql.connector
 import uuid
@@ -276,21 +276,27 @@ def CheckData():
     cursor.execute(f"SELECT Password,acc_type,UserName FROM user_data WHERE UserName = '{UserName}'")
     data = cursor.fetchall()
     if data == []:
-        return f'''
+        return '''
         <script>
             alert("No UserName Found");
             window.location.href = "{url_for('EnterPassword')}";
         </script>'''
     elif (PassWord != data[0][0]) and (UserName == data[0][2]):
-         return f'''
+        return '''
         <script>
             alert("Incorrect Password");
             window.location.href = "{url_for('EnterPassword')}";
         </script>
         '''
     elif (PassWord == data[0][0]) and (userType == data[0][1]):
-        return redirect(url_for(userType))
-   
+        response = make_response(redirect(url_for(userType)))
+
+        # Set the 'UserName' and 'userType' cookies
+        response.set_cookie('UserName', UserName)
+        response.set_cookie('userType', userType)
+
+        return response
+
 @app.route('/Grades')
 def StudentGrades():
     db = mysql.connector.connect(
@@ -305,9 +311,17 @@ def StudentGrades():
     form_data = json.dumps(students) 
     return render_template('StudentGrades.html',form_data=form_data, students=students)
 
+
 @app.route('/UploadAssignment')
 def UploadAssignment():
-    return render_template('UploadAssignments.html')
+    bucket = storage.bucket()
+    blobs = bucket.list_blobs()
+    assignment_urls = []
+    filenames = []
+    for blob in blobs:
+        filenames.append(blob.name)  # Extract only the filename without the "Assignments/" prefix
+        assignment_urls.append(blob.generate_signed_url(expiration=datetime.timedelta(days=1)))
+    return render_template('UploadAssignments.html',assignment_urls=assignment_urls, filenames=filenames)
 
 
 @app.route('/upload-assignment', methods=['POST'])
@@ -321,7 +335,7 @@ def upload_assignment():
         blob = bucket.blob(filename)
         blob.upload_from_filename(temp_path)
         os.remove(temp_path)
-        return redirect(url_for('Admin'))
+        return redirect(url_for('UploadAssignment'))
     else:
         return 'No file selected.'
 
@@ -336,7 +350,20 @@ def assignments():
         assignment_urls.append(blob.generate_signed_url(expiration=datetime.timedelta(days=1)))
     return render_template('GetAssignments.html', assignment_urls=assignment_urls, filenames=filenames)
 
+@app.route('/profile')
+def Profile():
+    UserName = request.cookies.get('UserName')
 
+    db = mysql.connector.connect(
+        host=host,
+        user=user,
+        database=database
+    )
+    cursor = db.cursor()
+    cursor.execute(f"SELECT * FROM user_data WHERE UserName = '{UserName}'")
+    data = cursor.fetchall()
+
+    return render_template('Profile.html',data=data[0])
 
 
 

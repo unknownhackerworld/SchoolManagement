@@ -6,29 +6,43 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
     <title>Student Page</title>
 </head>
 
 <body>
-    <nav class="bg-violet-800 py-4 px-6">
-        <div class="flex items-center justify-between">
-            <a href="{{url_for('Student')}}" class="text-3xl font-bold text-white">XYZSchool</a>
-            <div class="text-xl">
-                <!-- Update the links for student pages -->
-                <a href="{{url_for('Student')}}" class="text-white hover:text-gray-800 px-4 py-2">Dashboard</a>
-                <a href="{{url_for('StudentGrades')}}" class="text-white hover:text-gray-800 px-4 py-2">Grades</a>
-                <a href="" class="text-white hover:text-gray-800 px-4 py-2">Assignments</a>
-                <a href="" class="text-white hover:text-gray-800 px-4 py-2">Profile</a>
-            </div>
-        </div>
-    </nav>
+   <nav class="bg-violet-800 py-4 px-6">
+       <div class="flex items-center justify-between">
+           <a href="{{url_for('Student')}}" class="text-3xl font-bold text-white">XYZSchool</a>
+           <div class="text-xl">
+               <a href="{{url_for('Student')}}" class="text-white hover:text-gray-800 px-4 py-2"><span
+                       class="material-symbols-outlined text-3xl">
+                       home
+                   </span></a>
+               <a href="{{url_for('StudentGrades')}}" class="text-white hover:text-gray-800 px-4 py-2"><span
+                       class="material-symbols-outlined text-3xl">
+                       summarize
+                   </span></a>
+               <a href="{{url_for('assignments')}}" class="text-white hover:text-gray-800 px-4 py-2"><span
+                       class="material-symbols-outlined text-3xl">
+                       assignment
+                   </span></a>
+               <a href="{{url_for('Profile')}}" class="text-white hover:text-gray-800 px-4 py-2"><span
+                       class="material-symbols-outlined text-3xl">
+                       account_circle
+                   </span></a>
+           </div>
+       </div>
+   </nav>
     <div class="grid grid-cols-6">
         <div class="bg-violet-800 col-span-1 h-screen w-36">
             <div class="flex mt-5 flex-col text-white gap-y-2">
-                <a href="" class="py-3 text-center shadow-2xl mx-1">Dashboard</a>
-                <a href="" class="py-3 text-center shadow-2xl mx-1">Grades</a>
-                <a href="" class="py-3 text-center shadow-2xl mx-1">Assignments</a>
-                <a href="" class="py-3 text-center shadow-2xl mx-1">Profile</a>
+               <a href="{{url_for('Student')}}" class="py-3 text-center shadow-2xl mx-1">Dashboard</a>
+               <a href="{{url_for('StudentGrades')}}" class="py-3 text-center shadow-2xl mx-1">Grades</a>
+               <a href="{{url_for('assignments')}}" class="py-3 text-center shadow-2xl mx-1">Assignments</a>
+               <a href="" class="py-3 text-center shadow-2xl mx-1">Profile</a>
             </div>
         </div>
         <div class="col-span-5 p-8">

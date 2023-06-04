@@ -6,16 +6,41 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
     <title>Document</title>
 </head>
 
 <body>
-    <nav class="bg-violet-800 py-4 px-6">
+    <nav class="bg-violet-800 py-4  px-6">
         <div class="flex items-center justify-between">
-            <a href="/" class="text-3xl font-bold text-white">XYZSchool</a>
-            <div class="text-xl">
-                <a href="{{ url_for('EnterPassword') }}" class="text-white hover:text-gray-800 px-4 py-2">Admin</a>
-                <a href="{{ url_for('EnterPassword') }}" class="text-white hover:text-gray-800 px-4 py-2">Parent</a>
+            <a href="{{url_for('Admin')}}" class="text-3xl font-bold text-white">XYZSchool</a>
+            <div class="text-3xl">
+                <a href="{{url_for('Admin')}}" class="text-white hover:text-gray-800 px-4 py-2"><span
+                        class="material-symbols-outlined text-3xl">
+                        home
+                    </span></a>
+                <a href="{{url_for('StudentsDetails')}}" class="text-white hover:text-gray-800 px-4 py-2 "><span
+                        class="material-symbols-outlined text-3xl">
+                        settings_account_box
+                    </span></a>
+                <a href="{{ url_for('AddStudents') }}" class="text-white hover:text-gray-800 px-4 py-2 "><span
+                        class="material-symbols-outlined text-3xl">
+                        person_add
+                    </span></a>
+                <a href="{{ url_for('StudentsReport')}}" class="text-white hover:text-gray-800 px-4 py-2 "><span
+                        class="material-symbols-outlined text-3xl">
+                        lab_profile
+                    </span></a>
+                <a href="{{ url_for('EditStudents') }}" class="text-white hover:text-gray-800 px-4 py-2 "><span
+                        class="material-symbols-outlined text-3xl">
+                        edit
+                    </span></a>
+                <a href="{{ url_for('UploadAssignment') }}" class="text-white hover:text-gray-800 px-4 py-2 "><span
+                        class="material-symbols-outlined text-3xl">
+                        assignment_add
+                    </span></a>
             </div>
         </div>
     </nav>
