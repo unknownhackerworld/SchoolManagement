@@ -26,16 +26,24 @@ password=""
 database="SchoolProject"
 
 @app.route('/')
-def hello_world():
+def Home():
    return render_template("password.html")
+
+
 
 @app.route('/AddStudents')
 def AddStudents():
-   return render_template("AddStudents.html")
+    if 'userType' not in request.cookies or 'userName' not in request.cookies:
+        return redirect(url_for('Home'))
+    else:
+        return render_template("AddStudents.html")
 
 
 @app.route('/StudentsDetails')
 def StudentsDetails():
+    if 'userType' not in request.cookies or 'userName' not in request.cookies:
+        return redirect(url_for('Home'))
+    
     db = mysql.connector.connect(
         host=host,
         user=user,
@@ -54,6 +62,9 @@ def StudentsDetails():
 
 @app.route('/ViewStudents', methods=['POST'])
 def process():
+    if 'userType' not in request.cookies or 'userName' not in request.cookies:
+        return redirect(url_for('Home'))
+     
     value = request.form['value']
     db = mysql.connector.connect(
          host=host,
@@ -69,6 +80,9 @@ def process():
     
 @app.route('/get-names')
 def get_names():
+    if 'userType' not in request.cookies or 'userName' not in request.cookies:
+        return redirect(url_for('Home'))
+     
     if request.args.get('start') or request.args.get('end'):
         start = int(request.args.get('start'))
         end = int(request.args.get('end'))
@@ -116,6 +130,9 @@ def get_names():
     
 @app.route('/AddData', methods=['POST'])
 def AddData():
+    if 'userType' not in request.cookies or 'userName' not in request.cookies:
+        return redirect(url_for('Home'))
+     
     random_uuid = uuid.uuid4()
     random_string = str(random_uuid)
 
@@ -160,6 +177,9 @@ def AddData():
 
 @app.route('/EditStudents')
 def EditStudents():
+    if 'userType' not in request.cookies or 'userName' not in request.cookies:
+        return redirect(url_for('Home'))
+     
     db = mysql.connector.connect(
         host=host,
         user=user,
@@ -174,6 +194,9 @@ def EditStudents():
 
 @app.route('/Edit',methods=['POST'])
 def Edit():
+    if 'userType' not in request.cookies or 'userName' not in request.cookies:
+        return redirect(url_for('Home'))
+     
     admn = request.form['admn']
     id = request.form['id']
     student_id = request.form['studentId']
@@ -207,6 +230,9 @@ def Edit():
         '''
 @app.route('/MarkEdit',methods=['POST'])
 def MarkEdit():
+    if 'userType' not in request.cookies or 'userName' not in request.cookies:
+        return redirect(url_for('Home'))
+     
     test1 = request.form['TEST1']
     test2 = request.form['TEST2']
     test3 = request.form['TEST3']
@@ -237,6 +263,9 @@ def MarkEdit():
 
 @app.route('/StudentsReport')
 def StudentsReport():
+    if 'userType' not in request.cookies or 'userName' not in request.cookies:
+        return redirect(url_for('Home'))
+     
     db = mysql.connector.connect(
         host=host,
         user=user,
@@ -251,14 +280,22 @@ def StudentsReport():
 
 @app.route('/Admin')
 def Admin():
+    if 'userType' not in request.cookies or 'userName' not in request.cookies:
+        return redirect(url_for('Home'))
+     
     return render_template('Admin.html')
 
 @app.route('/Students')
 def Student():
+    if 'userType' not in request.cookies or 'userName' not in request.cookies:
+        return redirect(url_for('Home'))
+     
     return render_template('Student.html')
 
 @app.route('/login')
 def EnterPassword():
+    
+     
     return render_template('password.html')
 
 @app.route('/CheckData',methods=['POST'])
@@ -292,13 +329,16 @@ def CheckData():
         response = make_response(redirect(url_for(userType)))
 
         # Set the 'UserName' and 'userType' cookies
-        response.set_cookie('UserName', UserName)
+        response.set_cookie('userName', UserName)
         response.set_cookie('userType', userType)
 
         return response
 
 @app.route('/Grades')
 def StudentGrades():
+    if 'userType' not in request.cookies or 'userName' not in request.cookies:
+        return redirect(url_for('Home'))
+     
     db = mysql.connector.connect(
         host=host,
         user=user,
@@ -314,6 +354,9 @@ def StudentGrades():
 
 @app.route('/UploadAssignment')
 def UploadAssignment():
+    if 'userType' not in request.cookies or 'userName' not in request.cookies:
+        return redirect(url_for('Home'))
+     
     bucket = storage.bucket()
     blobs = bucket.list_blobs()
     assignment_urls = []
@@ -326,6 +369,9 @@ def UploadAssignment():
 
 @app.route('/upload-assignment', methods=['POST'])
 def upload_assignment():
+    if 'userType' not in request.cookies or 'userName' not in request.cookies:
+        return redirect(url_for('Home'))
+     
     file = request.files['file']
     if file:
         filename = secure_filename(file.filename)
@@ -341,6 +387,9 @@ def upload_assignment():
 
 @app.route('/assignments')
 def assignments():
+    if 'userType' not in request.cookies or 'userName' not in request.cookies:
+        return redirect(url_for('Home'))
+     
     bucket = storage.bucket()
     blobs = bucket.list_blobs()
     assignment_urls = []
@@ -352,6 +401,9 @@ def assignments():
 
 @app.route('/profile')
 def Profile():
+    if 'userType' not in request.cookies or 'userName' not in request.cookies:
+        return redirect(url_for('Home'))
+     
     UserName = request.cookies.get('UserName')
 
     db = mysql.connector.connect(
