@@ -1,9 +1,24 @@
 from flask import Flask,render_template,request,jsonify,redirect,url_for
+from werkzeug.utils import secure_filename
 import mysql.connector
 import uuid
 import json
+import os
+import firebase_admin
+from firebase_admin import credentials, storage
+import datetime
+
+
+cred = credentials.Certificate('./firebase_key.json')
+firebase_admin.initialize_app(cred, {
+    'storageBucket': 'schoolproject-allen.appspot.com'
+})
+
+
 
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = 'uploads'  # Specify the upload folder here
+
 
 host = "localhost"
 user = "root"
@@ -289,7 +304,40 @@ def StudentGrades():
     students = [dict(zip(columns, student)) for student in cursor.fetchall()]
     form_data = json.dumps(students) 
     return render_template('StudentGrades.html',form_data=form_data, students=students)
-            
+
+@app.route('/UploadAssignment')
+def UploadAssignment():
+    return render_template('UploadAssignments.html')
+
+
+@app.route('/upload-assignment', methods=['POST'])
+def upload_assignment():
+    file = request.files['file']
+    if file:
+        filename = secure_filename(file.filename)
+        temp_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(temp_path)
+        bucket = storage.bucket()
+        blob = bucket.blob(filename)
+        blob.upload_from_filename(temp_path)
+        os.remove(temp_path)
+        return redirect(url_for('Admin'))
+    else:
+        return 'No file selected.'
+
+@app.route('/assignments')
+def assignments():
+    bucket = storage.bucket()
+    blobs = bucket.list_blobs()
+    assignment_urls = []
+    filenames = []
+    for blob in blobs:
+        filenames.append(blob.name)  # Extract only the filename without the "Assignments/" prefix
+        assignment_urls.append(blob.generate_signed_url(expiration=datetime.timedelta(days=1)))
+    return render_template('GetAssignments.html', assignment_urls=assignment_urls, filenames=filenames)
+
+
+
 
 
 if __name__ == '__main__':

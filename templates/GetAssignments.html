@@ -15,12 +15,10 @@
             <a href="{{url_for('Student')}}" class="text-3xl font-bold text-white">XYZSchool</a>
             <div class="text-xl">
                 <!-- Update the links for student pages -->
-                <a href="{{url_for('Student')}}"
-                    class="text-white hover:text-gray-800 px-4 py-2">Dashboard</a>
+                <a href="{{url_for('Student')}}" class="text-white hover:text-gray-800 px-4 py-2">Dashboard</a>
                 <a href="" class="text-white hover:text-gray-800 px-4 py-2">Courses</a>
                 <a href="" class="text-white hover:text-gray-800 px-4 py-2">Grades</a>
-                <a href="{{url_for('assignments')}}"
-                    class="text-white hover:text-gray-800 px-4 py-2">Assignments</a>
+                <a href="{{url_for('assignments')}}" class="text-white hover:text-gray-800 px-4 py-2">Assignments</a>
                 <a href="" class="text-white hover:text-gray-800 px-4 py-2">Profile</a>
             </div>
         </div>
@@ -34,8 +32,15 @@
                 <a href="" class="py-3 text-center shadow-2xl mx-1">Profile</a>
             </div>
         </div>
-        <div class="col-span-5 flex items-center justify-center">
-            <h1 class="text-4xl font-bold text-gray-800">Welcome to Student Page</h1>
+        <div class="col-span-5 mt-8">
+          <ul class="flex flex-col gap-y-3 text-bold text-xl">
+              {% for index in range(assignment_urls|length) %}
+              <li><a href="{{ assignment_urls[index] }}">{{ filenames[index] }}</a></li>
+              <hr class="w-[70%] h-[1px] bg-slate-400" />
+              {% endfor %}
+
+          </ul>
+
         </div>
     </div>
 </body>

@@ -32,8 +32,11 @@
             </div>
         </div>
         <div class="col-span-5 flex items-center justify-center">
-            <h1 class="text-4xl font-bold text-gray-800">Welcome To Admin Page</h1>
-        </div>
+            <form action="{{ url_for('upload_assignment') }}" method="POST" enctype="multipart/form-data">
+                <input type="file" name="file" accept=".pdf,.doc,.docx">
+                <button><input type="submit" value="Upload Assignment"></button>
+            </form>
+
     </div>
 </body>
 
