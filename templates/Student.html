@@ -56,7 +56,8 @@
 
         for (var i = 0; i < cookies.length; i++) { var cookie=cookies[i]; var eqPos=cookie.indexOf("=");
     var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-    document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/"; } } // Call the removeAllCookies
+    document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/"; }
+window.location.href = "{{url_for('EnterPassword')}}"; } // Call the removeAllCookies
 
     </script>
 </body>

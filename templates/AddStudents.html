@@ -58,8 +58,7 @@
                  <a href="{{ url_for('UploadAssignment') }}" class="py-3 text-center shadow-2xl mx-1">Upload
                      Assignments</a>
                 <button onclick="removeAllCookies()" class="py-3 text-center shadow-2xl mx-1">Logout</button>
-                <button onclick="removeAllCookies()"
-                                         class="py-3 text-center shadow-2xl mx-1">Logout</button>
+              
 
               
             </div>
@@ -132,6 +131,7 @@
                  var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
                  document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
              }
+             window.location.href = "{{url_for('EnterPassword')}}";
          } // Call the removeAllCookies
      </script>
 </body>

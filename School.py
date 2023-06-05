@@ -418,7 +418,7 @@ def Profile():
 
     return render_template('Profile_Student.html',data=data[0])
 
-@app.route('/profile')
+@app.route('/admin_profile')
 def Profile_Admin():
     if 'userType' not in request.cookies or 'userName' not in request.cookies:
         return redirect(url_for('Home'))
