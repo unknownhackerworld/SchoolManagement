@@ -41,6 +41,10 @@
                         class="material-symbols-outlined text-3xl">
                         assignment_add
                     </span></a>
+                <a href="{{url_for('Profile_Admin')}}" class="text-white hover:text-gray-800 px-4 py-2"><span
+                            class="material-symbols-outlined text-3xl">
+                            account_circle
+                        </span></a>
             </div>
         </div>
     </nav>
@@ -53,6 +57,7 @@
                  <a href="{{ url_for('EditStudents') }}" class="py-3 text-center shadow-2xl mx-1">Edit Student</a>
                  <a href="{{ url_for('UploadAssignment') }}" class="py-3 text-center shadow-2xl mx-1">Upload
                      Assignments</a>
+                <button onclick="removeAllCookies()" class="py-3 text-center shadow-2xl mx-1">Logout</button>
                 <button onclick="removeAllCookies()"
                                          class="py-3 text-center shadow-2xl mx-1">Logout</button>
 

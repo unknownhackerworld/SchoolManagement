@@ -41,6 +41,10 @@
                         class="material-symbols-outlined text-3xl">
                         assignment_add
                     </span></a>
+                <a href="{{url_for('Profile_Admin')}}" class="text-white hover:text-gray-800 px-4 py-2"><span
+                        class="material-symbols-outlined text-3xl">
+                        account_circle
+                    </span></a>
             </div>
         </div>
     </nav>
@@ -121,6 +125,7 @@
                  var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
                  document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
              }
+             window.location.href = "{{url_for('EnterPassword')}}";
          } 
      </script>
 </body>

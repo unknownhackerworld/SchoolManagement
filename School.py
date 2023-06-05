@@ -404,7 +404,7 @@ def Profile():
     if 'userType' not in request.cookies or 'userName' not in request.cookies:
         return redirect(url_for('Home'))
      
-    UserName = request.cookies.get('UserName')
+    UserName = request.cookies.get('userName')
 
     db = mysql.connector.connect(
         host=host,
@@ -414,8 +414,28 @@ def Profile():
     cursor = db.cursor()
     cursor.execute(f"SELECT * FROM user_data WHERE UserName = '{UserName}'")
     data = cursor.fetchall()
+    print(data)
 
-    return render_template('Profile.html',data=data[0])
+    return render_template('Profile_Student.html',data=data[0])
+
+@app.route('/profile')
+def Profile_Admin():
+    if 'userType' not in request.cookies or 'userName' not in request.cookies:
+        return redirect(url_for('Home'))
+     
+    UserName = request.cookies.get('userName')
+
+    db = mysql.connector.connect(
+        host=host,
+        user=user,
+        database=database
+    )
+    cursor = db.cursor()
+    cursor.execute(f"SELECT * FROM user_data WHERE UserName = '{UserName}'")
+    data = cursor.fetchall()
+    print(data)
+
+    return render_template('Profile_Admin.html',data=data[0])
 
 
 

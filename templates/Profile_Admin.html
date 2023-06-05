@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    <title>Document</title>
+</head>
+
+<body>
+    <nav class="bg-violet-800 py-4  px-6">
+        <div class="flex items-center justify-between">
+            <a href="{{url_for('Admin')}}" class="text-3xl font-bold text-white">XYZSchool</a>
+            <div class="text-3xl">
+                <a href="{{url_for('Admin')}}" class="text-white hover:text-gray-800 px-4 py-2"><span
+                        class="material-symbols-outlined text-3xl">
+                        home
+                    </span></a>
+                <a href="{{url_for('StudentsDetails')}}" class="text-white hover:text-gray-800 px-4 py-2 "><span
+                        class="material-symbols-outlined text-3xl">
+                        settings_account_box
+                    </span></a>
+                <a href="{{ url_for('AddStudents') }}" class="text-white hover:text-gray-800 px-4 py-2 "><span
+                        class="material-symbols-outlined text-3xl">
+                        person_add
+                    </span></a>
+                <a href="{{ url_for('StudentsReport')}}" class="text-white hover:text-gray-800 px-4 py-2 "><span
+                        class="material-symbols-outlined text-3xl">
+                        lab_profile
+                    </span></a>
+                <a href="{{ url_for('EditStudents') }}" class="text-white hover:text-gray-800 px-4 py-2 "><span
+                        class="material-symbols-outlined text-3xl">
+                        edit
+                    </span></a>
+                <a href="{{ url_for('UploadAssignment') }}" class="text-white hover:text-gray-800 px-4 py-2 "><span
+                        class="material-symbols-outlined text-3xl">
+                        assignment_add
+                    </span></a>
+                    <a href="{{url_for('Profile_Admin')}}" class="text-white hover:text-gray-800 px-4 py-2"><span
+                            class="material-symbols-outlined text-3xl">
+                            account_circle
+                        </span></a>
+            </div>
+        </div>
+    </nav>
+    <div class="grid grid-cols-6">
+        <div class="bg-violet-800 col-span-1 h-screen w-36">
+            <div class="flex mt-5 flex-col text-white gap-y-2">
+                <a href="{{ url_for('StudentsDetails') }}" class="py-3 text-center shadow-2xl mx-1">Student Detail</a>
+                <a href="{{ url_for('AddStudents') }}" class="py-3 text-center shadow-2xl mx-1">Add Students</a>
+                <a href="{{ url_for('StudentsReport')}}" class="py-3 text-center shadow-2xl mx-1">Student Report</a>
+                <a href="{{ url_for('EditStudents') }}" class="py-3 text-center shadow-2xl mx-1">Edit Student</a>
+                <a href="{{ url_for('UploadAssignment') }}" class="py-3 text-center shadow-2xl mx-1">Upload
+                    Assignments</a>
+                <button onclick="removeAllCookies()" class="py-3 text-center shadow-2xl mx-1">Logout</button>
+
+
+            </div>
+        </div>
+        <div class="col-span-5 mt-5 scale-100">
+            <div class="grid grid-cols-2 gap-20 mt-20">
+                <div>
+                    <label for="name" class="block font-bold text-gray-800 text-2xl">Name</label>
+                    <div name="name"
+                        class="border-b px-4 py-2 rounded-md w-full focus:border-blue-500 focus:outline-none">
+                        {{data[0]}}
+
+                    </div>
+                </div>
+                <div>
+                    <label for="UserName" class="block font-bold text-gray-800 text-2xl">UserName</label>
+                    <div id="UserName" name="UserName"
+                        class="border-b px-4 py-2 rounded-md w-full focus:border-blue-500 focus:outline-none">
+                        {{data[1]}}
+                    </div>
+                </div>
+                <div>
+                    <label for="Phone Number" class="block font-bold text-gray-800 text-2xl">Phone
+                        Number</label>
+                    <div id="Phone Number" name="Phone Number"
+                        class="border-b px-4 py-2 rounded-md w-full focus:border-blue-500 focus:outline-none">
+                        {{data[3]}}
+                    </div>
+                </div>
+                <div>
+                    <label for="Account Type" class="block font-bold text-gray-800 text-2xl">Account
+                        Type</label>
+                    <div id="Account Type" name="Account Type"
+                        class="border-b px-4 py-2 rounded-md w-full focus:border-blue-500 focus:outline-none">
+                        {{data[4]}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function removeAllCookies() {
+            var cookies = document.cookie.split(";");
+
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i];
+                var eqPos = cookie.indexOf("=");
+                var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+                document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+            }
+        } // Call the removeAllCookies
+    </script>
+</body>
+
+</html>
