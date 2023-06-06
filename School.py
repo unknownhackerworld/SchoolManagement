@@ -547,7 +547,6 @@ def Profile():
     cursor = db.cursor()
     cursor.execute(f"SELECT * FROM user_data WHERE UserName = '{UserName}'")
     data = cursor.fetchall()
-    print(data)
 
     return render_template('Profile_Student.html',data=data[0])
 
