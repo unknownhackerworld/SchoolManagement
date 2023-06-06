@@ -254,7 +254,8 @@ def EditStudents():
     db = mysql.connector.connect(
         host=host,
         user=user,
-        database=database
+        database=database,
+        password=password
     )
     cursor = db.cursor()
     cursor.execute("SELECT * FROM students")
@@ -367,7 +368,8 @@ def StudentsReport():
     db = mysql.connector.connect(
         host=host,
         user=user,
-        database=database
+        database=database,
+        password=password
     )
     cursor = db.cursor()
     cursor.execute("SELECT NAME,TEST_1,TEST_2,TEST_3,TEST_4,`STUDENT ID` FROM students")
@@ -414,7 +416,8 @@ def CheckData():
     db = mysql.connector.connect(
         host=host,
         user=user,
-        database=database
+        database=database,
+        password=password
     )
     cursor = db.cursor()
     cursor.execute(f"SELECT Password,acc_type,UserName,ID FROM user_data WHERE UserName = '{UserName}'")
@@ -542,7 +545,8 @@ def Profile():
     db = mysql.connector.connect(
         host=host,
         user=user,
-        database=database
+        database=database,
+        password=password
     )
     cursor = db.cursor()
     cursor.execute(f"SELECT * FROM user_data WHERE UserName = '{UserName}'")
@@ -569,7 +573,8 @@ def Profile_Admin():
     db = mysql.connector.connect(
         host=host,
         user=user,
-        database=database
+        database=database,
+        password=password
     )
     cursor = db.cursor()
     cursor.execute(f"SELECT * FROM user_data WHERE UserName = '{UserName}'")
