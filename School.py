@@ -25,6 +25,20 @@ user = "root"
 password=""
 database="SchoolProject"
 
+def check_db_connection():
+    try:
+        mysql.connector.connect(
+            host=host,
+            user=user,
+            database=database,
+            password=password
+        )
+    except mysql.connector.Error as error:
+        print('Database connection error:', error)
+        return False
+
+    return True
+
 @app.route('/')
 def Home():
    return render_template("password.html")
@@ -37,12 +51,23 @@ def AddStudents():
         return redirect(url_for('Home'))
     else:
         return render_template("AddStudents.html")
+    
+    
 
 
 @app.route('/StudentsDetails')
 def StudentsDetails():
     if 'userType' not in request.cookies or 'userName' not in request.cookies:
         return redirect(url_for('Home'))
+    
+    if not check_db_connection():
+        return f'''
+        <script>
+        alert("Database is not connected.");
+        window.location.href = {url_for('StudentsDetails')};
+
+        </script>
+        '''
     
     db = mysql.connector.connect(
         host=host,
@@ -54,8 +79,6 @@ def StudentsDetails():
     cursor = db.cursor()
     cursor.execute("SELECT `NAME`,`FATHER`,`STUDENT ID` FROM students")
     names = [[row[0],row[1],row[2]] for row in cursor.fetchall()]
-   
-   
     db.close()
     return render_template('StudentsDetails.html', names=names)
 
@@ -64,24 +87,52 @@ def StudentsDetails():
 def process():
     if 'userType' not in request.cookies or 'userName' not in request.cookies:
         return redirect(url_for('Home'))
+    
+    if not check_db_connection():
+        return f'''
+        <script>
+        alert("Database is not connected.");
+        window.location.href = {url_for('StudentsDetails')};
+
+        </script>
+        '''
      
     value = request.form['value']
     db = mysql.connector.connect(
-         host=host,
-        user=user,
-        database=database,
-        password=password
-    )
+    host=host,
+    user=user,
+    database=database,
+    password=password
+)
+
     cursor = db.cursor()
+
     cursor.execute(f"SELECT * FROM students WHERE `STUDENT ID` = '{value}'")
     details = cursor.fetchall()
-    mark = details[0][-1] + details[0][-2] + details[0][-3] + details[0][-4]
-    return render_template('ViewStudents.html',details=details[0],mark=mark)
+
+    cursor.execute(f"SELECT UserName FROM user_data WHERE `ID` = '{value}'")
+    userName = cursor.fetchone()
+
+    
+    mark = sum(details[0][-4:])
+
+    print(details)
+    return render_template('ViewStudents.html', details=details[0], mark=mark, username=userName[0])
+
     
 @app.route('/get-names')
 def get_names():
     if 'userType' not in request.cookies or 'userName' not in request.cookies:
         return redirect(url_for('Home'))
+    
+    if not check_db_connection():
+        return '''
+        <script>
+        alert("Database is not connected.");
+        window.location.href = window.location.href;
+
+        </script>
+        '''
      
     if request.args.get('start') or request.args.get('end'):
         start = int(request.args.get('start'))
@@ -132,6 +183,15 @@ def get_names():
 def AddData():
     if 'userType' not in request.cookies or 'userName' not in request.cookies:
         return redirect(url_for('Home'))
+    
+    if not check_db_connection():
+        return f'''
+        <script>
+        alert("Database is not connected.");
+        window.location.href = {url_for('AddStudents')};
+
+        </script>
+        '''
      
     random_uuid = uuid.uuid4()
     random_string = str(random_uuid)
@@ -162,7 +222,9 @@ def AddData():
         admn = 1
 
     try:
-        cursor.execute(f"INSERT INTO `students`(`ID`, `NAME`, `ADMN NO`, `CLASS`, `DOB`, `FATHER NUMBER`, `FATHER`, `MOTHER`, `ADDRESS`, `MOTHER NUMBER`, `STUDENT ID`) VALUES ('{id}','{name}','{admn}','{class_name}','{date_of_birth}','{father_number}','{father}','{mother}','{address}','{mother_number}','{random_string}')")
+        cursor.execute(f"INSERT INTO `students` (`ID`, `NAME`, `ADMN NO`, `CLASS`, `DOB`, `FATHER NUMBER`, `FATHER`, `MOTHER`, `ADDRESS`, `MOTHER NUMBER`, `STUDENT ID`,`TEST_1`,`TEST_2`,`TEST_3`,`TEST_4`) VALUES ('{id}','{name}','{admn}','{class_name}','{date_of_birth}','{father_number}','{father}','{mother}','{address}','{mother_number}','{random_string}','0','0','0','0')")
+
+        cursor.execute(f"INSERT INTO `user_data` (`Name`, `UserName`, `Password`, `PhoneNumber`, `acc_type`,`ID`) VALUES ('{name}', '{f'XYZCPT{admn}'}', 'XYZStud@2023', '{father_number}', 'Student','{random_string}'); ")
         db.commit()
         return redirect(url_for('StudentsDetails'))
     except Exception as e:
@@ -179,6 +241,15 @@ def AddData():
 def EditStudents():
     if 'userType' not in request.cookies or 'userName' not in request.cookies:
         return redirect(url_for('Home'))
+    
+    if not check_db_connection():
+        return '''
+        <script>
+        alert("Database is not connected.");
+        window.location.href = window.location.href;
+
+        </script>
+        '''
      
     db = mysql.connector.connect(
         host=host,
@@ -196,6 +267,15 @@ def EditStudents():
 def Edit():
     if 'userType' not in request.cookies or 'userName' not in request.cookies:
         return redirect(url_for('Home'))
+    
+    if not check_db_connection():
+        return f'''
+        <script>
+        alert("Database is not connected.");
+        window.location.href = {url_for('EditStudents')};
+
+        </script>
+        '''
      
     admn = request.form['admn']
     id = request.form['id']
@@ -232,6 +312,15 @@ def Edit():
 def MarkEdit():
     if 'userType' not in request.cookies or 'userName' not in request.cookies:
         return redirect(url_for('Home'))
+    
+    if not check_db_connection():
+        return f'''
+        <script>
+        alert("Database is not connected.");
+        window.location.href = {url_for('StudentsReport')};
+
+        </script>
+        '''
      
     test1 = request.form['TEST1']
     test2 = request.form['TEST2']
@@ -265,6 +354,15 @@ def MarkEdit():
 def StudentsReport():
     if 'userType' not in request.cookies or 'userName' not in request.cookies:
         return redirect(url_for('Home'))
+    
+    if not check_db_connection():
+        return '''
+        <script>
+        alert("Database is not connected.");
+        window.location.href = window.location.href;
+
+        </script>
+        '''
      
     db = mysql.connector.connect(
         host=host,
@@ -304,13 +402,22 @@ def CheckData():
     UserName = request.form['username']
     PassWord = request.form['password']
 
+    if not check_db_connection():
+        return f'''
+        <script>
+        alert("Database is not connected.");
+        window.location.href = "{url_for('EnterPassword')}";
+
+        </script>
+        '''
+
     db = mysql.connector.connect(
         host=host,
         user=user,
         database=database
     )
     cursor = db.cursor()
-    cursor.execute(f"SELECT Password,acc_type,UserName FROM user_data WHERE UserName = '{UserName}'")
+    cursor.execute(f"SELECT Password,acc_type,UserName,ID FROM user_data WHERE UserName = '{UserName}'")
     data = cursor.fetchall()
     if data == []:
         return f'''
@@ -331,25 +438,42 @@ def CheckData():
         # Set the 'UserName' and 'userType' cookies
         response.set_cookie('userName', UserName)
         response.set_cookie('userType', userType)
+        response.set_cookie('ID', data[0][3])
 
         return response
 
 @app.route('/Grades')
 def StudentGrades():
+
     if 'userType' not in request.cookies or 'userName' not in request.cookies:
         return redirect(url_for('Home'))
+    
+    if not check_db_connection():
+        return '''
+        <script>
+        alert("Database is not connected.");
+        window.location.href = window.location.href;
+
+        </script>
+        '''
      
     db = mysql.connector.connect(
         host=host,
         user=user,
-        database=database
+        database=database,
+        password=password
     )
     cursor = db.cursor()
-    cursor.execute("SELECT NAME,TEST_1,TEST_2,TEST_3,TEST_4,`STUDENT ID` FROM students")
-    columns = [column[0] for column in cursor.description]
-    students = [dict(zip(columns, student)) for student in cursor.fetchall()]
-    form_data = json.dumps(students) 
-    return render_template('StudentGrades.html',form_data=form_data, students=students)
+    cursor.execute(f"SELECT NAME,TEST_1,TEST_2,TEST_3,TEST_4 FROM students WHERE `STUDENT ID` = '{request.cookies['ID']}'")
+    Grades  = cursor.fetchall()
+    if Grades == []:
+        return f'''
+        <script>alert("Cannot Retrieve Grades");
+        window.location.href = '{url_for('Student')}'
+        </script>
+        '''
+    
+    return render_template('StudentGrades.html',grades=Grades[0])
 
 
 @app.route('/UploadAssignment')
@@ -403,6 +527,15 @@ def assignments():
 def Profile():
     if 'userType' not in request.cookies or 'userName' not in request.cookies:
         return redirect(url_for('Home'))
+    
+    if not check_db_connection():
+        return '''
+        <script>
+        alert("Database is not connected.");
+        window.location.href = window.location.href;
+
+        </script>
+        '''
      
     UserName = request.cookies.get('userName')
 
@@ -422,6 +555,15 @@ def Profile():
 def Profile_Admin():
     if 'userType' not in request.cookies or 'userName' not in request.cookies:
         return redirect(url_for('Home'))
+    
+    if not check_db_connection():
+        return '''
+        <script>
+        alert("Database is not connected.");
+        window.location.href = window.location.href;
+
+        </script>
+        '''
      
     UserName = request.cookies.get('userName')
 

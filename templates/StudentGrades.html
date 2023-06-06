@@ -47,64 +47,41 @@
             </div>
         </div>
         <div class="col-span-5 p-8">
-            <form action="/MarkEdit" method="post">
-                <input type="hidden" id="studentId" value="" name="studentId" />
-
+               
                 <div>
                     <label for="name" class="block font-bold text-gray-800 text-2xl">Name</label>
-                    <select id="name" name="name"
-                        class="border-b px-4 py-2 rounded-md w-full focus:border-blue-500 focus:outline-none"
-                        onchange="updateFormFields()">
-                        <option disabled selected>Select a student</option>
-                        {% for student in students %}
-                        <option value="{{ student.NAME }}">{{ student.NAME }}</option>
-                        {% endfor %}
-                    </select>
+                    <div>{{ grades[0] }}</div>
+                   
                 </div>
                 <div class="grid grid-cols-2 gap-20 mt-20">
                     <div>
                         <label for="test1" class="block font-bold text-gray-800 text-2xl">TEST 1</label>
-                        <div id="TEST1" name="TEST1" class="border-b px-4 py-2 rounded-md w-full focus:border-blue-500 focus:outline-none">
-                        </div>
+                        <div id="TEST1" name="TEST1"
+                            class="border-b px-4 py-2 rounded-md w-full focus:border-blue-500 focus:outline-none">{{ grades[1] }}</div>
                     </div>
                     <div>
                         <label for="test2" class="block font-bold text-gray-800 text-2xl">TEST 2</label>
-                        <div id="TEST2" name="TEST2" class="border-b px-4 py-2 rounded-md w-full focus:border-blue-500 focus:outline-none">
-                        </div>
+                        <div id="TEST2" name="TEST2"
+                            class="border-b px-4 py-2 rounded-md w-full focus:border-blue-500
+                            focus:outline-none">{{ grades[2] }}</div>
                     </div>
                     <div>
                         <label for="test3" class="block font-bold text-gray-800 text-2xl">TEST 3</label>
-                        <div id="TEST3" name="TEST3" class="border-b px-4 py-2 rounded-md w-full focus:border-blue-500 focus:outline-none">
-                        </div>
+                        <div id="TEST3" name="TEST3"
+                            class="border-b px-4 py-2 rounded-md w-full focus:border-blue-500 focus:outline-none">
+                            {{ grades[3] }}</div>
                     </div>
                     <div>
                         <label for="test4" class="block font-bold text-gray-800 text-2xl">TEST 4</label>
-                        <div id="TEST4" name="TEST4" class="border-b px-4 py-2 rounded-md w-full focus:border-blue-500 focus:outline-none">
-                        </div>
+                        <div id="TEST4" name="TEST4"
+                            class="border-b px-4 py-2 rounded-md w-full focus:border-blue-500 focus:outline-none">
+                            {{ grades[4] }}</div>
                     </div>
 
                 </div>
-            </form>
         </div>
     </div>
-    <script>
-        var formData = JSON.parse('{{ form_data | safe }}');
-
-        function updateFormFields() {
-            var selectedName = document.getElementById("name").value;
-
-            var selectedStudent = formData.find(function (student) {
-                return student.NAME === selectedName;
-            });
-
-            document.getElementById("TEST1").innerText = selectedStudent.TEST_1;
-            document.getElementById("TEST2").innerText = selectedStudent.TEST_2;
-            document.getElementById("TEST3").innerText = selectedStudent.TEST_3;
-            document.getElementById("TEST4").innerText = selectedStudent.TEST_4;
-            document.getElementById("studentId").innerText = selectedStudent['STUDENT ID'];
-
-        }
-    </script>
+   
     </div>
      <script>
          function removeAllCookies() {

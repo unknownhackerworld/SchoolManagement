@@ -48,7 +48,7 @@
         <div class="col-span-5 mt-8">
           <ul class="flex flex-col gap-y-3 text-bold text-xl">
               {% for index in range(assignment_urls|length) %}
-              <li><a href="{{ assignment_urls[index] }}">{{ filenames[index] }}</a></li>
+              <li><a href="{{ assignment_urls[index] }}" target="_blank">{{ filenames[index] }}</a></li>
               <hr class="w-[70%] h-[1px] bg-slate-400" />
               {% endfor %}
 
