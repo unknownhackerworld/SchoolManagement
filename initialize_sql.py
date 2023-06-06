@@ -1,7 +1,27 @@
 import mysql.connector
 import uuid
+from getpass import getpass
+
 
 try:
+  def check():
+    global name, UserName,Password,PhoneNumber
+    name = input("Enter Admin Name: ")
+    UserName = input("Enter Admin UserName: ")
+    PhoneNumber = input("Enter PhoneNumber: ")
+    Password = getpass("Enter Admin Password: ")
+    RePassword = getpass("Enter Admin Password Again: ")
+
+
+
+    if Password != RePassword:
+      print("Passwords Doesn't Match\n")
+      check()
+    else:
+      pass
+
+
+  check()
   connection = mysql.connector.connect(
       host="localhost",
       user="root",
@@ -45,22 +65,11 @@ try:
     `ID` VARCHAR(100) NOT NULL
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
   """
+
+
   random_uuid = uuid.uuid4()
   random_string = str(random_uuid)
-  def check():
-    global name, UserName,Password,PhoneNumber
-    name = input("Enter Admin Name: ")
-    UserName = input("Enter Admin UserName: ")
-    PhoneNumber = input("Enter PhoneNumber: ")
-    Password = input("Enter Admin Password: ")
-    RePassword = input("Enter Admin Password Again: ")
-
-    if Password != RePassword:
-      print("Passwords Doesn't Match")
-      check()
-    else:
-      pass
-  check()
+  
   user_data_insert = f"""
   INSERT INTO `user_data` (`Name`, `UserName`, `Password`, `PhoneNumber`, `acc_type`, `ID`) VALUES
   ('{name}', '{UserName}', '{Password}', '{PhoneNumber}', 'Admin','{random_string}');
@@ -73,6 +82,9 @@ try:
   connection.commit()
   connection.close()
   print("Database Created Successfully!!!")
+  print(f"UserName: {UserName}, Password: {Password}")
+
+
 except Exception as e:
   if "database exists" in str(e):
     print("Database Exists! Delete Existing One")
