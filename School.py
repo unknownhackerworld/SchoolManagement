@@ -11,7 +11,7 @@ import datetime
 
 cred = credentials.Certificate('./firebase_key.json')
 firebase_admin.initialize_app(cred, {
-    'storageBucket': 'schoolproject-allen.appspot.com'
+    'storageBucket': '<your-storage-bucket-idea>'
 })
 
 
