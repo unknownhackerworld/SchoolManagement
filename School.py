@@ -313,13 +313,13 @@ def CheckData():
     cursor.execute(f"SELECT Password,acc_type,UserName FROM user_data WHERE UserName = '{UserName}'")
     data = cursor.fetchall()
     if data == []:
-        return '''
+        return f'''
         <script>
             alert("No UserName Found");
             window.location.href = "{url_for('EnterPassword')}";
         </script>'''
     elif (PassWord != data[0][0]) and (UserName == data[0][2]):
-        return '''
+        return f'''
         <script>
             alert("Incorrect Password");
             window.location.href = "{url_for('EnterPassword')}";

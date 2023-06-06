@@ -40,10 +40,17 @@ CREATE TABLE user_data (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 """
 
+user_data_insert = """
+INSERT INTO `user_data` (`Name`, `UserName`, `Password`, `PhoneNumber`, `acc_type`) VALUES
+('Alice Bob', 'Admin', 'Admin', '1234567890', 'Admin');
+COMMIT;
+"""
+
 # Execute the queries to create the tables
 cursor = connection.cursor()
 cursor.execute(students_table_query)
 cursor.execute(user_data_table_query)
+cursor.execute(user_data_insert)
 
 # Commit the changes and close the connection
 connection.commit()
