@@ -1,0 +1,4 @@
+firebase_admin==6.1.0
+Flask==2.3.2
+mysql_connector_repackaged==0.3.1
+Werkzeug==2.3.6
