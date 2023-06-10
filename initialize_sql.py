@@ -13,8 +13,28 @@ try:
 except:
   os.system('pip install -r requirements.txt')
 
+host = "localhost"
+user = "root"
+password=""
+
+def check_db_connection():
+    try:
+        mysql.connector.connect(
+            host=host,
+            user=user,
+            password=password
+        )
+    except mysql.connector.Error as error:
+        print('Database connection error:', error)
+        return False
+
+    return True
 
 try:
+  if not check_db_connection():
+    print("\nDatabase Not Connected")
+    quit()
+
   def check():
     global name, UserName,Password,PhoneNumber
     name = input("Enter Admin Name: ")
@@ -34,9 +54,9 @@ try:
 
   check()
   connection = mysql.connector.connect(
-      host="localhost",
-      user="root",
-      password=""
+      host=host,
+      user=user,
+      password=password
   )
 
   create_database_query = "CREATE DATABASE SchoolProject"

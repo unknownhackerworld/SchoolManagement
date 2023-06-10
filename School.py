@@ -10,7 +10,7 @@ import datetime
 
 cred = credentials.Certificate('./firebase_key.json')
 firebase_admin.initialize_app(cred, {
-    'storageBucket': '<your-storage-bucket-idea>'
+    'storageBucket': 'schoolproject-allen.appspot.com'
 })
 
 
@@ -197,6 +197,7 @@ def AddData():
 
     name = request.form['name']
     class_name = request.form['class']
+    section = request.form['section']
     date_of_birth = request.form['dateOfBirth']
     father_number = request.form['fatherNumber']
     father = request.form['father']
@@ -219,9 +220,10 @@ def AddData():
     else:
         id = 1
         admn = 1
+        
 
     try:
-        cursor.execute(f"INSERT INTO `students` (`ID`, `NAME`, `ADMN NO`, `CLASS`, `DOB`, `FATHER NUMBER`, `FATHER`, `MOTHER`, `ADDRESS`, `MOTHER NUMBER`, `STUDENT ID`,`TEST_1`,`TEST_2`,`TEST_3`,`TEST_4`) VALUES ('{id}','{name}','{admn}','{class_name}','{date_of_birth}','{father_number}','{father}','{mother}','{address}','{mother_number}','{random_string}','0','0','0','0')")
+        cursor.execute(f"INSERT INTO `students` (`ID`, `NAME`, `ADMN NO`, `CLASS`, `DOB`, `FATHER NUMBER`, `FATHER`, `MOTHER`, `ADDRESS`, `MOTHER NUMBER`, `STUDENT ID`,`TEST_1`,`TEST_2`,`TEST_3`,`TEST_4`) VALUES ('{id}','{name}','{admn}','{class_name}-{section}','{date_of_birth}','{father_number}','{father}','{mother}','{address}','{mother_number}','{random_string}','0','0','0','0')")
 
         cursor.execute(f"INSERT INTO `user_data` (`Name`, `UserName`, `Password`, `PhoneNumber`, `acc_type`,`ID`) VALUES ('{name}', '{f'XYZCPT{admn}'}', 'XYZStud@2023', '{father_number}', 'Student','{random_string}'); ")
         db.commit()
@@ -419,7 +421,8 @@ def CheckData():
         password=password
     )
     cursor = db.cursor()
-    cursor.execute(f"SELECT Password,acc_type,UserName,ID FROM user_data WHERE UserName = '{UserName}'")
+    cursor.execute(
+        f"SELECT Password,acc_type,UserName,ID FROM user_data WHERE UserName = '{UserName}' AND acc_type = '{userType}'")
     data = cursor.fetchall()
     if data == []:
         return f'''
@@ -578,7 +581,6 @@ def Profile_Admin():
     cursor = db.cursor()
     cursor.execute(f"SELECT * FROM user_data WHERE UserName = '{UserName}'")
     data = cursor.fetchall()
-    print(data)
 
     return render_template('Profile_Admin.html',data=data[0])
 
