@@ -82,13 +82,13 @@
       const searchInput = document.getElementById('searchInput');
       const nameList = document.getElementById('nameList');
       const loader = document.getElementById('loader');
-      const itemsPerPage = 20; // Number of items to load per page
-      let currentPage = 0; // Current page number
+      const itemsPerPage = 20; 
+      let currentPage = 0; 
 
       function loadMoreItems() {
       const start = currentPage * itemsPerPage;
       const end = start + itemsPerPage;
-      const searchTerm = searchInput.value.trim(); // Get the search term from the input
+      const searchTerm = searchInput.value.trim(); 
 
       let url
       if (searchTerm === '') {

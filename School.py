@@ -1,13 +1,12 @@
 from flask import Flask,render_template,request,jsonify,redirect,url_for,make_response
 from werkzeug.utils import secure_filename
+import firebase_admin
+from firebase_admin import credentials, storage
 import mysql.connector
 import uuid
 import json
 import os
-import firebase_admin
-from firebase_admin import credentials, storage
 import datetime
-
 
 cred = credentials.Certificate('./firebase_key.json')
 firebase_admin.initialize_app(cred, {

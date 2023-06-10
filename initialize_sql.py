@@ -1,6 +1,17 @@
 import mysql.connector
 import uuid
 from getpass import getpass
+import os
+
+
+try:
+  from flask import Flask, render_template, request, jsonify, redirect, url_for, make_response
+  from werkzeug.utils import secure_filename
+  import firebase_admin
+  from firebase_admin import credentials, storage
+
+except:
+  os.system('pip install -r requirements.txt')
 
 
 try:
