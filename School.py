@@ -219,8 +219,7 @@ def AddData():
         admn = int(a[0][1]) + 1
     else:
         id = 1
-        admn = 1
-        
+        admn = 1        
 
     try:
         cursor.execute(f"INSERT INTO `students` (`ID`, `NAME`, `ADMN NO`, `CLASS`, `DOB`, `FATHER NUMBER`, `FATHER`, `MOTHER`, `ADDRESS`, `MOTHER NUMBER`, `STUDENT ID`,`TEST_1`,`TEST_2`,`TEST_3`,`TEST_4`) VALUES ('{id}','{name}','{admn}','{class_name}-{section}','{date_of_birth}','{father_number}','{father}','{mother}','{address}','{mother_number}','{random_string}','0','0','0','0')")
@@ -298,7 +297,6 @@ def Edit():
         password=password
     )
     cursor = db.cursor()
-
     try:
         cursor.execute(f"UPDATE students SET ID = '{id}', NAME = '{name}', `ADMN NO` = '{admn}', CLASS = '{class_name}', DOB = '{date_of_birth}', `FATHER NUMBER` = '{father_number}', FATHER = '{father}', MOTHER = '{mother}', ADDRESS = '{address}', `MOTHER NUMBER` = '{mother_number}', `STUDENT ID` = '{student_id}' WHERE `STUDENT ID` = '{student_id}'")
         db.commit()
@@ -349,9 +347,9 @@ def MarkEdit():
             alert("There Is Some Error: {e}");
             window.location.href = "{url_for('StudentsReport')}";
         </script>
-        '''    
+        '''
     
-
+    
 @app.route('/StudentsReport')
 def StudentsReport():
     if 'userType' not in request.cookies or 'userName' not in request.cookies:
@@ -389,14 +387,11 @@ def Admin():
 @app.route('/Students')
 def Student():
     if 'userType' not in request.cookies or 'userName' not in request.cookies:
-        return redirect(url_for('Home'))
-     
+        return redirect(url_for('Home'))     
     return render_template('Student.html')
 
 @app.route('/login')
-def EnterPassword():
-    
-     
+def EnterPassword():     
     return render_template('password.html')
 
 @app.route('/CheckData',methods=['POST'])
@@ -512,7 +507,7 @@ def upload_assignment():
         os.remove(temp_path)
         return redirect(url_for('UploadAssignment'))
     else:
-        return 'No file selected.'
+        return '<script>alert("No file selected.")</script>'
 
 @app.route('/assignments')
 def assignments():
@@ -583,8 +578,6 @@ def Profile_Admin():
     data = cursor.fetchall()
 
     return render_template('Profile_Admin.html',data=data[0])
-
-
 
 if __name__ == '__main__':
    app.run()

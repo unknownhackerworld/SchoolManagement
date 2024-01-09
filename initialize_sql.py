@@ -36,9 +36,23 @@ try:
     quit()
 
   def check():
+    connection_new = mysql.connector.connect(
+      host=host,
+      user=user,
+      password=password,database="SchoolProject"
+    )
+  
+    cur = connection_new.cursor()
+  
+  
     global name, UserName,Password,PhoneNumber
     name = input("Enter Admin Name: ")
     UserName = input("Enter Admin UserName: ")
+    cur.execute(f"SELECT UserName FROM user_data WHERE UserName = '{UserName}'")
+    data = cur.fetchall()    
+    if data != []:
+       print("Username Exists! Please Enter New Username\n")
+       check()
     PhoneNumber = input("Enter PhoneNumber: ")
     Password = getpass("Enter Admin Password: ")
     RePassword = getpass("Enter Admin Password Again: ")
@@ -48,10 +62,7 @@ try:
     if Password != RePassword:
       print("Passwords Doesn't Match\n")
       check()
-    else:
-      pass
-
-
+    
   check()
   connection = mysql.connector.connect(
       host=host,
@@ -59,7 +70,7 @@ try:
       password=password
   )
 
-  create_database_query = "CREATE DATABASE SchoolProject"
+  create_database_query = "CREATE DATABASE IF NOT EXISTS SchoolProject"
   cursor = connection.cursor()
   cursor.execute(create_database_query)
 
@@ -67,7 +78,7 @@ try:
   cursor.execute(use_database_query)
 
   students_table_query = """
-  CREATE TABLE students (
+  CREATE TABLE IF NOT EXISTS students (
     ID INT(5) DEFAULT NULL,
     NAME VARCHAR(54) DEFAULT NULL,
     `ADMN NO` INT(5) DEFAULT NULL,
@@ -87,7 +98,7 @@ try:
   """
 
   user_data_table_query = """
-  CREATE TABLE user_data (
+  CREATE TABLE IF NOT EXISTS user_data (
     Name VARCHAR(50) NOT NULL,
     UserName VARCHAR(100) NOT NULL,
     Password VARCHAR(100) NOT NULL,
